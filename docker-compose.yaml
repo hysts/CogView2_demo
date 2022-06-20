@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  cogview2:
+    image: cogview2
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION:-3.9.13}
+    environment:
+      SAT_HOME: /work/pretrained
+    network_mode: host
+    tty: true
+    volumes:
+      - ${PWD}:/work
+      - ${TORCH_HOME}:/.torch
+      - ${HOME}/.config:/.config
+    working_dir: /work
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: ["gpu"]

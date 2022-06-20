@@ -1,0 +1,7 @@
+git+https://github.com/Sleepychord/Image-Local-Attention@43fee31
+gradio==3.0.17
+icetk==0.0.3
+numpy==1.22.4
+SwissArmyTransformer==0.2.4
+torch==1.11.0
+torchvision==0.12.0

@@ -1,0 +1,3 @@
+[submodule "CogView2"]
+	path = CogView2
+	url = https://github.com/THUDM/CogView2
