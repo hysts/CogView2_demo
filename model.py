@@ -345,13 +345,33 @@ class AppModel(Model):
         self.translator = gr.Interface.load(
             'spaces/chinhon/translation_eng2ch')
 
+    def make_grid(self, images: list[np.ndarray] | None) -> np.ndarray | None:
+        if images is None or len(images) == 0:
+            return None
+        ncols = 1
+        while True:
+            if ncols**2 >= len(images):
+                break
+            ncols += 1
+        nrows = (len(images) + ncols - 1) // ncols
+        h, w = images[0].shape[:2]
+        grid = np.zeros((h * nrows, w * ncols, 3), dtype=np.uint8)
+        for i in range(nrows):
+            for j in range(ncols):
+                index = ncols * i + j
+                if index >= len(images):
+                    break
+                grid[h * i:h * (i + 1), w * j:w * (j + 1)] = images[index]
+        return grid
+
     def run_with_translation(
-            self, text: str, translate: bool, style: str, seed: int,
-            only_first_stage: bool,
-            num: int) -> tuple[str | None, list[np.ndarray] | None]:
+        self, text: str, translate: bool, style: str, seed: int,
+        only_first_stage: bool, num: int
+    ) -> tuple[str | None, np.ndarray | None, list[np.ndarray] | None]:
         if translate:
             text = translated_text = self.translator(text)
         else:
             translated_text = None
-        return translated_text, self.run(text, style, seed, only_first_stage,
-                                         num)
+        results = self.run(text, style, seed, only_first_stage, num)
+        grid_image = self.make_grid(results)
+        return translated_text, grid_image, results

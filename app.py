@@ -77,7 +77,11 @@ def main():
             with gr.Column():
                 with gr.Group():
                     translated_text = gr.Textbox(label='Translated Text')
-                    result = gr.Gallery(label='Output')
+                    with gr.Tabs():
+                        with gr.TabItem('Output (Grid View)'):
+                            result_grid = gr.Image(show_label=False)
+                        with gr.TabItem('Output (Gallery)'):
+                            result_gallery = gr.Gallery(show_label=False)
 
         run_button.click(fn=model.run_with_translation,
                          inputs=[
@@ -90,7 +94,8 @@ def main():
                          ],
                          outputs=[
                              translated_text,
-                             result,
+                             result_grid,
+                             result_gallery,
                          ])
         examples.click(fn=set_example_text,
                        inputs=examples,
