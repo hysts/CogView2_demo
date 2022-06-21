@@ -13,8 +13,6 @@ services:
     tty: true
     volumes:
       - ${PWD}:/work
-      - ${TORCH_HOME}:/.torch
-      - ${HOME}/.config:/.config
     working_dir: /work
     ipc: host
     deploy:
