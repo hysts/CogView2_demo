@@ -3,6 +3,8 @@ This is an unofficial demo app for [CogView2](https://github.com/THUDM/CogView2)
 
 ![screenshot](assets/screenshot.jpg)
 
+It takes about 1 minute to generate 8 images.
+
 ## Prerequisite
 An A100 instance is required to run CogView2.
 
