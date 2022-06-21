@@ -1,6 +1,8 @@
 # CogView2 demo
 This is an unofficial demo app for [CogView2](https://github.com/THUDM/CogView2).
 
+![screenshot](assets/screenshot.jpg)
+
 ## Prerequisite
 You need to use an A100 GPU instance to run CogView2.
 
