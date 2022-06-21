@@ -40,6 +40,12 @@ cd CogView2
 patch -p1 < ../patch
 ```
 
+### Download pretrained models (Optional)
+The pretrained models will be downloaded automatically on the first run,
+but it may take quite some time.
+So you may want to download them in advance.
+This repo assumes the pretrained models are stored in the `pretrained` directory.
+
 ## Run
 ```bash
 docker compose run --rm cogview2 python app.py
