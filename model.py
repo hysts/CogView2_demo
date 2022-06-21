@@ -10,6 +10,7 @@ import sys
 import time
 from typing import Any
 
+import gradio as gr
 import numpy as np
 import torch
 from icetk import IceTokenizer
@@ -336,3 +337,21 @@ class Model:
         logger.info(f'Elapsed: {elapsed}')
         logger.info('--- done ---')
         return res
+
+
+class AppModel(Model):
+    def __init__(self, only_first_stage: bool):
+        super().__init__(only_first_stage)
+        self.translator = gr.Interface.load(
+            'spaces/chinhon/translation_eng2ch')
+
+    def run_with_translation(
+            self, text: str, translate: bool, style: str, seed: int,
+            only_first_stage: bool,
+            num: int) -> tuple[str | None, list[np.ndarray] | None]:
+        if translate:
+            text = translated_text = self.translator(text)
+        else:
+            translated_text = None
+        return translated_text, self.run(text, style, seed, only_first_stage,
+                                         num)

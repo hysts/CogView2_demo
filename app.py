@@ -9,11 +9,13 @@ import subprocess
 
 import gradio as gr
 
-from model import Model
+from model import AppModel
 
 DESCRIPTION = '''# CogView2 (text2image)
 
 This is an unofficial demo for <a href="https://github.com/THUDM/CogView2">https://github.com/THUDM/CogView2</a>.
+
+[This Space](https://huggingface.co/spaces/chinhon/translation_eng2ch) is used for translation from English to Chinese.
 '''
 
 
@@ -30,7 +32,7 @@ def set_example_text(example: list) -> dict:
 
 def main():
     args = parse_args()
-    model = Model(args.only_first_stage)
+    model = AppModel(args.only_first_stage)
 
     with gr.Blocks(css='style.css') as demo:
         gr.Markdown(DESCRIPTION)
@@ -38,7 +40,9 @@ def main():
         with gr.Row():
             with gr.Column():
                 with gr.Group():
-                    text = gr.Textbox(label='Input')
+                    text = gr.Textbox(label='Input Text')
+                    translate = gr.Checkbox(label='Translate to Chinese',
+                                            value=False)
                     style = gr.Dropdown(choices=[
                         'mainbody',
                         'photo',
@@ -71,17 +75,23 @@ def main():
                     run_button = gr.Button('Run')
 
             with gr.Column():
-                result = gr.Gallery(label='Output')
+                with gr.Group():
+                    translated_text = gr.Textbox(label='Translated Text')
+                    result = gr.Gallery(label='Output')
 
-        run_button.click(fn=model.run,
+        run_button.click(fn=model.run_with_translation,
                          inputs=[
                              text,
+                             translate,
                              style,
                              seed,
                              only_first_stage,
                              num_images,
                          ],
-                         outputs=result)
+                         outputs=[
+                             translated_text,
+                             result,
+                         ])
         examples.click(fn=set_example_text,
                        inputs=examples,
                        outputs=examples.components)
