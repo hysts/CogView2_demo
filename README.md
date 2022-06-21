@@ -32,6 +32,12 @@ sudo systemctl restart docker
 docker build . -t cogview2
 ```
 
+### Apply patch to CogView2 repo
+```bash
+cd CogView2
+patch -p1 < ../patch
+```
+
 ## Run
 ```bash
 docker compose run --rm cogview2 python app.py
