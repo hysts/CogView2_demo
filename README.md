@@ -34,5 +34,5 @@ docker build . -t cogview2
 
 ## Run
 ```bash
-docker-compose run --rm cogview2 python app.py
+docker compose run --rm cogview2 python app.py
 ```
