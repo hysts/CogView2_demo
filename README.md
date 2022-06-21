@@ -4,10 +4,10 @@ This is an unofficial demo app for [CogView2](https://github.com/THUDM/CogView2)
 ![screenshot](assets/screenshot.jpg)
 
 ## Prerequisite
-You need to use an A100 GPU instance to run CogView2.
+An A100 instance is required to run CogView2.
 
 ## Installation
-### Preparation
+### Change default-runtime of docker
 First, put `"default-runtime": "nvidia"` in `/etc/docker/daemon.json`.
 See: https://github.com/NVIDIA/nvidia-docker/issues/1033#issuecomment-519946473
 ```json
