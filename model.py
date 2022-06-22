@@ -233,6 +233,9 @@ class Model:
 
     def run(self, text: str, style: str, seed: int, only_first_stage: bool,
             num: int) -> list[np.ndarray] | None:
+        logger.info('----- run -----')
+        start = time.perf_counter()
+
         set_random_seed(seed)
         seq, txt_len = self.preprocess_text(text)
         if seq is None:
@@ -241,6 +244,10 @@ class Model:
         self.only_first_stage = only_first_stage
         tokens = self.generate_tokens(seq, txt_len, num)
         res = self.generate_images(seq, txt_len, tokens)
+
+        elapsed = time.perf_counter() - start
+        logger.info(f'Elapsed: {elapsed}')
+        logger.info('----- done -----')
         return res
 
     @torch.inference_mode()
