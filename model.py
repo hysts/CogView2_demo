@@ -213,6 +213,7 @@ class Model:
         logger.info('--- update_style ---')
         start = time.perf_counter()
 
+        self.style = style
         self.args = argparse.Namespace(**(vars(self.args) | get_recipe(style)))
         self.query_template = self.args.query_template
         logger.info(f'{self.query_template=}')
