@@ -1,4 +1,4 @@
-# This code is adapted from https://github.com/THUDM/CogView2/blob/4e55cce981eb94b9c8c1f19ba9f632fd3ee42ba8/cogview2_text2image.py
+# This code is adapted frum https://github.com/THUDM/CogView2/blob/4e55cce981eb94b9c8c1f19ba9f632fd3ee42ba8/cogview2_text2image.py
 
 from __future__ import annotations
 
@@ -236,11 +236,11 @@ class Model:
         logger.info('----- run -----')
         start = time.perf_counter()
 
+        self.update_style(style)
         set_random_seed(seed)
         seq, txt_len = self.preprocess_text(text)
         if seq is None:
             return None
-        self.update_style(style)
         self.only_first_stage = only_first_stage
         tokens = self.generate_tokens(seq, txt_len, num)
         res = self.generate_images(seq, txt_len, tokens)
