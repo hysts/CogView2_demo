@@ -23,8 +23,11 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def set_example_text(example: list) -> dict:
-    return gr.Textbox.update(value=example[0])
+def set_example_text(example: list) -> list[dict]:
+    return [
+        gr.Textbox.update(value=example[0]),
+        gr.Dropdown.update(value=example[1]),
+    ]
 
 
 def main():
@@ -67,8 +70,11 @@ def main():
                                            value=8,
                                            label='Number of Images')
                     with open('samples.txt') as f:
-                        samples = [[line.strip()] for line in f.readlines()]
-                    examples = gr.Dataset(components=[text], samples=samples)
+                        samples = [
+                            line.strip().split('\t') for line in f.readlines()
+                        ]
+                    examples = gr.Dataset(components=[text, style],
+                                          samples=samples)
                     run_button = gr.Button('Run')
 
             with gr.Column():
