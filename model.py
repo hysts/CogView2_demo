@@ -208,10 +208,15 @@ class Model:
         return srg
 
     def update_style(self, style: str) -> None:
-        if style == self.style:
-            return
         logger.info('--- update_style ---')
         start = time.perf_counter()
+        if style == self.style:
+            logger.info(f'{style=}, {self.style=}')
+
+            elapsed = time.perf_counter() - start
+            logger.info(f'Elapsed: {elapsed}')
+            logger.info('--- done ---')
+            return
 
         self.style = style
         self.args = argparse.Namespace(**(vars(self.args) | get_recipe(style)))
