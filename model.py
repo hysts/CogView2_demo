@@ -233,7 +233,7 @@ class Model:
 
     def run(self, text: str, style: str, seed: int, only_first_stage: bool,
             num: int) -> list[np.ndarray] | None:
-        logger.info('----- run -----')
+        logger.info('==================== run ====================')
         start = time.perf_counter()
 
         self.update_style(style)
@@ -247,7 +247,7 @@ class Model:
 
         elapsed = time.perf_counter() - start
         logger.info(f'Elapsed: {elapsed}')
-        logger.info('----- done -----')
+        logger.info('==================== done ====================')
         return res
 
     @torch.inference_mode()
