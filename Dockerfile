@@ -44,3 +44,5 @@ RUN rm -rf ${HOME}/.cache/pip
 
 WORKDIR /work
 ENV PYTHONPATH /work/:${PYTHONPATH}
+
+CMD ["python", "app.py"]

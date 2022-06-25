@@ -76,5 +76,5 @@ So you may want to download them in advance.
 
 ## Run
 ```bash
-docker compose run --rm cogview2 python app.py
+docker compose run --rm app
 ```

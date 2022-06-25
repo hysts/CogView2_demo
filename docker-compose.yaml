@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  cogview2:
+  app:
     image: cogview2
     build:
       context: .
