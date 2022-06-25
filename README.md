@@ -31,6 +31,12 @@ Then, restart docker.
 sudo systemctl restart docker
 ```
 
+### Clone this repo
+```bash
+git clone --recursive https://github.com/hysts/CogView2_demo
+cd CogView2_demo
+```
+
 ### Build docker image
 ```bash
 docker build . -t cogview2
