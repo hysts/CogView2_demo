@@ -31,10 +31,10 @@ formatter = logging.Formatter(
     '[%(asctime)s] %(name)s %(levelname)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S')
 stream_handler = logging.StreamHandler(stream=sys.stdout)
-stream_handler.setLevel(logging.DEBUG)
+stream_handler.setLevel(logging.INFO)
 stream_handler.setFormatter(formatter)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 logger.propagate = False
 logger.addHandler(stream_handler)
 
@@ -166,8 +166,7 @@ class Model:
             ['<start_of_image>', '<start_of_english>', '<start_of_chinese>'])
 
         elapsed = time.perf_counter() - start
-        logger.info(f'Elapsed: {elapsed}')
-        logger.info('--- done ---')
+        logger.info(f'--- done ({elapsed=:.3f}) ---')
         return tokenizer
 
     def load_model(self) -> tuple[InferenceModel, argparse.Namespace]:
@@ -177,8 +176,7 @@ class Model:
         model, args = InferenceModel.from_pretrained(self.args, 'coglm')
 
         elapsed = time.perf_counter() - start
-        logger.info(f'Elapsed: {elapsed}')
-        logger.info('--- done ---')
+        logger.info(f'--- done ({elapsed=:.3f}) ---')
         return model, args
 
     def load_strategy(self) -> CoglmStrategy:
@@ -192,8 +190,7 @@ class Model:
                                  top_k_cluster=self.args.temp_cluster_gen)
 
         elapsed = time.perf_counter() - start
-        logger.info(f'Elapsed: {elapsed}')
-        logger.info('--- done ---')
+        logger.info(f'--- done ({elapsed=:.3f}) ---')
         return strategy
 
     def load_srg(self) -> SRGroup:
@@ -203,25 +200,23 @@ class Model:
         srg = None if self.args.only_first_stage else SRGroup(self.args)
 
         elapsed = time.perf_counter() - start
-        logger.info(f'Elapsed: {elapsed}')
-        logger.info('--- done ---')
+        logger.info(f'--- done ({elapsed=:.3f}) ---')
         return srg
 
     def update_style(self, style: str) -> None:
         logger.info('--- update_style ---')
         start = time.perf_counter()
         if style == self.style:
-            logger.info(f'{style=}, {self.style=}')
+            logger.debug(f'{style=}, {self.style=}')
 
             elapsed = time.perf_counter() - start
-            logger.info(f'Elapsed: {elapsed}')
-            logger.info('--- done ---')
+            logger.info(f'--- done ({elapsed=:.3f}) ---')
             return
 
         self.style = style
         self.args = argparse.Namespace(**(vars(self.args) | get_recipe(style)))
         self.query_template = self.args.query_template
-        logger.info(f'{self.query_template=}')
+        logger.debug(f'{self.query_template=}')
 
         self.strategy.temperature = self.args.temp_all_gen
 
@@ -234,8 +229,7 @@ class Model:
             self.srg.itersr.strategy.topk = self.args.topk_itersr
 
         elapsed = time.perf_counter() - start
-        logger.info(f'Elapsed: {elapsed}')
-        logger.info('--- done ---')
+        logger.info(f'--- done ({elapsed=:.3f}) ---')
 
     def run(self, text: str, style: str, seed: int, only_first_stage: bool,
             num: int) -> list[np.ndarray] | None:
@@ -252,7 +246,7 @@ class Model:
         res = self.generate_images(seq, txt_len, tokens)
 
         elapsed = time.perf_counter() - start
-        logger.info(f'Elapsed: {elapsed}')
+        logger.info(f'Elapsed: {elapsed:.3f}')
         logger.info('==================== done ====================')
         return res
 
@@ -263,7 +257,7 @@ class Model:
         start = time.perf_counter()
 
         text = self.query_template.format(text)
-        logger.info(f'{text=}')
+        logger.debug(f'{text=}')
         seq = self.tokenizer.encode(text)
         logger.info(f'{len(seq)=}')
         if len(seq) > 110:
@@ -273,8 +267,7 @@ class Model:
         seq = torch.tensor(seq + [-1] * 400, device=self.device)
 
         elapsed = time.perf_counter() - start
-        logger.info(f'Elapsed: {elapsed}')
-        logger.info('--- done ---')
+        logger.info(f'--- done ({elapsed=:.3f}) ---')
         return seq, txt_len
 
     @torch.inference_mode()
@@ -309,11 +302,10 @@ class Model:
             output_list.append(coarse_samples)
             remaining -= self.max_batch_size
         output_tokens = torch.cat(output_list, dim=0)
-        logger.info(f'{output_tokens.shape=}')
+        logger.debug(f'{output_tokens.shape=}')
 
         elapsed = time.perf_counter() - start
-        logger.info(f'Elapsed: {elapsed}')
-        logger.info('--- done ---')
+        logger.info(f'--- done ({elapsed=:.3f}) ---')
         return output_tokens
 
     @staticmethod
@@ -327,7 +319,7 @@ class Model:
         logger.info('--- generate_images ---')
         start = time.perf_counter()
 
-        logger.info(f'{self.only_first_stage=}')
+        logger.debug(f'{self.only_first_stage=}')
         res = []
         if self.only_first_stage:
             for i in range(len(tokens)):
@@ -347,8 +339,7 @@ class Model:
                 res.append(decoded_img)  # only the last image (target)
 
         elapsed = time.perf_counter() - start
-        logger.info(f'Elapsed: {elapsed}')
-        logger.info('--- done ---')
+        logger.info(f'--- done ({elapsed=:.3f}) ---')
         return res
 
 
@@ -381,6 +372,9 @@ class AppModel(Model):
         self, text: str, translate: bool, style: str, seed: int,
         only_first_stage: bool, num: int
     ) -> tuple[str | None, np.ndarray | None, list[np.ndarray] | None]:
+        logger.info(
+            f'{text=}, {translate=}, {style=}, {seed=}, {only_first_stage=}, {num=}'
+        )
         if translate:
             text = translated_text = self.translator(text)
         else:
