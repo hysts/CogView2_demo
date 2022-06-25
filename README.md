@@ -41,10 +41,36 @@ patch -p1 < ../patch
 ```
 
 ### Download pretrained models (Optional)
+You can download the pretrained models from [Hugging Face Hub](https://huggingface.co/THUDM/CogView2) with the following command:
+```bash
+pip install huggingface_hub
+
+python download_pretrained_models.py
+```
+
+This repo assumes the pretrained models are stored in the `pretrained` directory as follows:
+```
+pretrained
+├── coglm
+│   ├── 432000
+│   │   └── mp_rank_00_model_states.pt
+│   ├── latest
+│   └── model_config.json
+├── cogview2-dsr
+│   ├── 20000
+│   │   └── mp_rank_00_model_states.pt
+│   ├── latest
+│   └── model_config.json
+└── cogview2-itersr
+    ├── 20000
+    │   └── mp_rank_00_model_states.pt
+    ├── latest
+    └── model_config.json
+```
+
 The pretrained models will be downloaded automatically on the first run,
 but it may take quite some time.
 So you may want to download them in advance.
-This repo assumes the pretrained models are stored in the `pretrained` directory.
 
 ## Run
 ```bash
