@@ -75,6 +75,11 @@ but it may take quite some time.
 So you may want to download them in advance.
 
 ## Run
+You can run the app with the following command:
 ```bash
 docker compose run --rm app
 ```
+
+The app will start up on port 7860 by default.
+You can change the port using `GRADIO_SERVER_PORT` environment variable.
+Use port forwarding when running on GCP, etc.
