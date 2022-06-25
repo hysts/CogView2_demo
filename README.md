@@ -50,6 +50,9 @@ pip install huggingface_hub
 python download_pretrained_models.py
 ```
 
+The total size of the models is approximately 40 GB.
+The above script downloads and extracts zip files of them, so twice as much disk space is needed.
+
 This repo assumes the pretrained models are stored in the `pretrained` directory as follows:
 ```
 pretrained
@@ -73,6 +76,7 @@ pretrained
 The pretrained models will be downloaded automatically on the first run,
 but it may take quite some time.
 So you may want to download them in advance.
+Also, downloading from the Hugging Face Hub using the command above may be way faster than the automatic download.
 
 ## Run
 You can run the app with the following command:
