@@ -1,7 +1,7 @@
 # CogView2 demo
 This is an unofficial demo app for [CogView2](https://github.com/THUDM/CogView2).
 
-You can try out a web demo: [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/THUDM/CogView2) (This version currently supports only the first stage.)
+You can try a web demo: [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/THUDM/CogView2)
 
 ![screenshot](assets/screenshot.jpg)
 
